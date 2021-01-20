@@ -29,7 +29,8 @@ body {
   -webkit-touch-callout: none; /* prevent callout to copy image, etc when tap to hold */
   -webkit-text-size-adjust: none; /* prevent webkit from resizing text to fit */
   -webkit-user-select: none; /* prevent copy paste, to allow, change 'none' to 'text' */
-  height: 100vh;
+  min-height: 100vh;
+  height: 100%;
   margin: 0px;
   padding: 0px;
   /* Padding to avoid the "unsafe" areas behind notches in the screen */
@@ -578,7 +579,7 @@ header {
   font-size: 18px;
 }
 
-.fake-link.selected-cat {
+.fake-link.active {
   font-weight: bold;
 }
 
@@ -594,7 +595,7 @@ header {
   gap: 10px;
 }
 
-.filter-btn.active-filter {
+.filter-btn.active {
   background-color: var(--selected-color) !important;
 }
 

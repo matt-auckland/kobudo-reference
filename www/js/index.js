@@ -28,30 +28,31 @@ var app = {
     );
   },
 
-  onDeviceReady: function () {},
+  onDeviceReady: function () {
+    // setup();
+  },
 };
 
 app.initialize();
 
-const categories = {};
+//TODO get working
+function selectWeapon(event) {
+  const weapon = event.target.getAttribute("data-weapon");
+  let filteredVideos = filterVideos({ weapon });
+  populateHeader({});
+  renderVideos(filteredVideos);
+  // document.querySelector(".selected-cat").classList.remove("selected-cat");
+  // document.querySelector(`#${catName}`).classList.add("selected-cat");
 
-categories.tekko = document.querySelector(".tekko");
-categories.bo = document.querySelector(".bo");
-categories.sai = document.querySelector(".sai");
-categories.nunchaku = document.querySelector(".nunchaku");
+  // for (const cat in categories) {
+  //   categories[cat].classList.add("hidden");
+  // }
+  // categories[catName].classList.remove("hidden");
 
-function selectCat(catName) {
-  document.querySelector(".selected-cat").classList.remove("selected-cat");
-  document.querySelector(`#${catName}`).classList.add("selected-cat");
-
-  for (const cat in categories) {
-    categories[cat].classList.add("hidden");
-  }
-  categories[catName].classList.remove("hidden");
-
-  updateFilters();
+  // updateFilters();
 }
 
+//TODO get working
 function updateFilters() {
   const filterBtns = document.querySelectorAll(".filter-btn");
   const requiredFilters = Array.from(
@@ -83,84 +84,119 @@ function updateFilters() {
   });
 }
 
-function selectKyuFilter(grade) {
-  const filterBtns = document.querySelectorAll(`.filter-btn`);
-  filterBtns.forEach((elm) => {
-    elm.classList.remove("active-filter");
-  });
-
-  document.querySelector(`.grade-${grade}`).classList.add("active-filter");
-
-  for (let i = 8; i >= grade; i--) {
-    const toShow = document.querySelectorAll(`.rank-${i}`);
-    toShow.forEach((elm) => {
-      elm.classList.remove("hidden");
-    });
-  }
-
-  for (let j = 0; j < grade; j++) {
-    const toHide = document.querySelectorAll(`.rank-${j}`);
-    toHide.forEach((elm) => {
-      elm.classList.add("hidden");
-    });
-  }
+//TODO get working
+function filterByRank(event) {
+  const rank = event.target.getAttribute("data-rank");
+  let filteredVideos = filterVideos({ weapon: activeWeapon, rank });
+  populateHeader({});
+  renderVideos(filteredVideos);
 }
 
-// selectCat("bo");
-// selectKyuFilter(0);
 setup();
 
 function setup() {
   calculateRanks();
-
   let filteredVideos = filterVideos({});
   populateHeader({});
   renderVideos(filteredVideos);
 }
 
-function populateHeader({ activeWeapon, activeRank }) {
-  if (!activeWeapon) activeWeapon = "Bo";
+function populateHeader({ activeRank }) {
   if (!activeRank) activeRank = 10;
 
   const header = document.querySelector("header");
-  header.innerHTML = `<nav></nav> <div class="filter-btns"></div>`;
-  const nav = header.querySelector("nav");
-  let navHtml = Object.keys(videos).map((weapon, i) => {
-    const html = `<span id="${weapon}" class="fake-link ${
-      weapon == activeWeapon && "active"
-    }" onclick="selectCat('${weapon}')">${weapon}</span>`;
+  header.innerHTML = null;
 
-    if (i % 2 == 1 && i > videos.length - 1)
-      html += `<span class="break">/</span>`;
-    return html;
+  const nav = document.createElement("nav");
+  Object.keys(videos).forEach((weapon, i) => {
+    const span = document.createElement("span");
+    span.setAttribute("data-weapon", weapon);
+    span.innerText = weapon;
+    span.id = weapon;
+    span.classList.add("fake-link");
+    if (weapon == activeWeapon) span.classList.add("active");
+    span.onclick = selectWeapon;
+
+    nav.appendChild(span);
+
+    if (i % 2 == 1 && i > videos.length - 1) {
+      const seperator = document.createElement("span");
+      seperator.classList.add("break");
+      nav.appendChild(seperator);
+    }
+  });
+  header.appendChild(nav);
+
+  const filterBtnCont = document.createElement("div");
+  filterBtnCont.classList.add("filter-btns");
+  videos[activeWeapon].ranks.forEach((rank) => {
+    const button = document.createElement("button");
+    button.setAttribute("data-rank", rank);
+    button.innerText = getRankName(rank);
+    button.classList.add("filter-btn");
+    if (activeRank == rank) button.classList.add("active");
+    button.onclick = filterByRank;
+
+    filterBtnCont.appendChild(button);
   });
 
-  nav.innerHTML = navHtml.join(" ");
-
-  const filters = header.querySelector(".filter-btns");
-  debugger;
-  let filterHtml = videos[activeWeapon].ranks.map((rank) => {
-    const html = `<button
-      class="filter-btn grade-${rank} ${activeRank == rank && "active"}}"
-      onclick="selectKyuFilter(${rank})"
-    >
-      ${getRankName(rank)}
-    </button>`;
-    return html;
-  });
-  filters.innerHTML = filterHtml.join(" ");
+  header.appendChild(filterBtnCont);
 }
 
 function renderVideos(videos) {
   const content = document.querySelector("#content");
+  content.innerHTML = null;
+
+  const title = document.createElement("h1");
+  title.innerText = videos.name;
+  title.classList.add("title");
+  content.appendChild(title);
+
+  if (videos?.Junbi?.length) {
+    content.appendChild(createVideoSection("Junbi", videos.Junbi));
+  }
+
+  if (videos?.Kihon?.length) {
+    content.appendChild(createVideoSection("Kihon", videos.Kihon));
+  }
+  if (videos?.Kata?.length) {
+    content.appendChild(createVideoSection("Kata", videos.Kata));
+  }
+  if (videos?.Kumite?.length) {
+    content.appendChild(createVideoSection("Kumite", videos.Kumite));
+  }
 }
 
+function createVideoSection(sectTitle, vidArray) {
+  let section = document.createElement("section");
+  const title = document.createElement("h2");
+  title.appendChild(document.createTextNode(sectTitle));
+
+  title.setAttribute("data-lowest-rank", vidArray.map((v) => v.rank).sort()[0]);
+  section.appendChild(title);
+  vidArray.forEach((vid) => {
+    const figure = document.createElement("figure");
+    figure.classList.add("video-with-title", `rank-${vid.rank}`);
+    const video = document.createElement("video");
+    video.setAttribute("src", vid.src);
+    video.setAttribute("controls", "");
+    const figcaption = document.createElement("figcaption");
+    figcaption.innerText = vid.caption;
+
+    figure.appendChild(video);
+    figure.appendChild(figcaption);
+    section.appendChild(figure);
+  });
+
+  return section;
+}
 function filterVideos({ weapon, rank }) {
   if (!weapon) weapon = "Bo";
   if (!rank) rank = 10;
+  window.activeWeapon = weapon;
   let weaponVideos = videos[weapon];
   Object.keys(weaponVideos).forEach((cat) => {
-    if (cat !== "name") {
+    if (!["name", "ranks"].includes(cat)) {
       weaponVideos[cat] = weaponVideos[cat].filter(
         (video) => video.rank <= rank
       );
