@@ -17,12 +17,12 @@
  * under the License.
  */
 
-import videos from "./videos.js";
+import videos from './videos.js';
 var app = {
   // Application Constructor
   initialize: function () {
     document.addEventListener(
-      "deviceready",
+      'deviceready',
       this.onDeviceReady.bind(this),
       false
     );
@@ -36,7 +36,7 @@ var app = {
 app.initialize();
 
 function selectWeapon(event) {
-  const weapon = event.target.getAttribute("data-weapon");
+  const weapon = event.target.getAttribute('data-weapon');
   let filteredVideos = filterVideos({ weapon, rank: 0 });
   populateHeader({ activeRank: 0 });
   renderVideos(filteredVideos);
@@ -44,7 +44,7 @@ function selectWeapon(event) {
 }
 
 function filterByRank(event) {
-  const rank = event.target.getAttribute("data-rank");
+  const rank = event.target.getAttribute('data-rank');
   let filteredVideos = filterVideos({ weapon: activeWeapon, rank });
   populateHeader({ activeRank: rank });
   renderVideos(filteredVideos);
@@ -54,43 +54,43 @@ setup();
 
 function setup() {
   calculateRanks();
-  let filteredVideos = filterVideos({ rank: 0, weapon: "Bo" });
+  let filteredVideos = filterVideos({ rank: 0, weapon: 'Bo' });
   populateHeader({ activeRank: 0 });
   renderVideos(filteredVideos);
 }
 
 function populateHeader({ activeRank }) {
-  const oldHeader = document.querySelector("header");
-  const newHeader = document.createElement("header");
+  const oldHeader = document.querySelector('header');
+  const newHeader = document.createElement('header');
 
-  const nav = document.createElement("nav");
+  const nav = document.createElement('nav');
   Object.keys(videos).forEach((weapon, i) => {
-    const weaponButton = document.createElement("weaponButton");
-    weaponButton.setAttribute("data-weapon", weapon);
+    const weaponButton = document.createElement('weaponButton');
+    weaponButton.setAttribute('data-weapon', weapon);
     weaponButton.innerText = weapon;
     weaponButton.id = weapon;
-    weaponButton.classList.add("fake-link");
-    if (weapon == activeWeapon) weaponButton.classList.add("active");
+    weaponButton.classList.add('fake-link');
+    if (weapon == activeWeapon) weaponButton.classList.add('active');
     weaponButton.onclick = selectWeapon;
 
     nav.appendChild(weaponButton);
 
     if (i % 2 == 1 && i > videos.length - 1) {
-      const seperator = document.createElement("span");
-      seperator.classList.add("break");
+      const seperator = document.createElement('span');
+      seperator.classList.add('break');
       nav.appendChild(seperator);
     }
   });
   newHeader.appendChild(nav);
 
-  const filterBtnCont = document.createElement("div");
-  filterBtnCont.classList.add("filter-btns");
+  const filterBtnCont = document.createElement('div');
+  filterBtnCont.classList.add('filter-btns');
   videos[activeWeapon].ranks.forEach((rank) => {
-    const button = document.createElement("button");
-    button.setAttribute("data-rank", rank);
+    const button = document.createElement('button');
+    button.setAttribute('data-rank', rank);
     button.innerText = getRankName(rank);
-    button.classList.add("filter-btn");
-    if (activeRank == rank) button.classList.add("active");
+    button.classList.add('filter-btn');
+    if (activeRank == rank) button.classList.add('active');
     button.onclick = filterByRank;
 
     filterBtnCont.appendChild(button);
@@ -101,47 +101,47 @@ function populateHeader({ activeRank }) {
 }
 
 function renderVideos(videos) {
-  const oldContent = document.querySelector("main");
-  const newContent = document.createElement("main");
-  newContent.id = "content";
+  const oldContent = document.querySelector('main');
+  const newContent = document.createElement('main');
+  newContent.id = 'content';
 
-  const title = document.createElement("h1");
+  const title = document.createElement('h1');
   title.innerText = videos.name;
-  title.classList.add("title");
+  title.classList.add('title');
   newContent.appendChild(title);
 
   if (videos?.Junbi?.length) {
-    newContent.appendChild(createVideoSection("Junbi", videos.Junbi));
+    newContent.appendChild(createVideoSection('Junbi', videos.Junbi));
   }
 
   if (videos?.Kihon?.length) {
-    newContent.appendChild(createVideoSection("Kihon", videos.Kihon));
+    newContent.appendChild(createVideoSection('Kihon', videos.Kihon));
   }
   if (videos?.Kata?.length) {
-    newContent.appendChild(createVideoSection("Kata", videos.Kata));
+    newContent.appendChild(createVideoSection('Kata', videos.Kata));
   }
   if (videos?.Kumite?.length) {
-    newContent.appendChild(createVideoSection("Kumite", videos.Kumite));
+    newContent.appendChild(createVideoSection('Kumite', videos.Kumite));
   }
   oldContent.replaceWith(newContent);
 }
 
 function createVideoSection(sectTitle, vidArray) {
-  let section = document.createElement("section");
-  const title = document.createElement("h2");
+  let section = document.createElement('section');
+  const title = document.createElement('h2');
   title.appendChild(document.createTextNode(sectTitle));
 
-  title.setAttribute("data-lowest-rank", vidArray.map((v) => v.rank).sort()[0]);
+  title.setAttribute('data-lowest-rank', vidArray.map((v) => v.rank).sort()[0]);
   section.appendChild(title);
   vidArray.forEach((vid) => {
-    const figure = document.createElement("figure");
-    figure.classList.add("video-with-title", `rank-${vid.rank}`);
-    const video = document.createElement("video");
-    video.setAttribute("src", vid.src);
+    const figure = document.createElement('figure');
+    figure.classList.add('video-with-title', `rank-${vid.rank}`);
+    const video = document.createElement('video');
+    video.setAttribute('src', vid.src);
     // video.setAttribute("poster", "../img/logo.png");
-    video.setAttribute("controls", "");
-    video.setAttribute("preload", "none");
-    const figcaption = document.createElement("figcaption");
+    video.setAttribute('controls', '');
+    video.setAttribute('preload', 'none');
+    const figcaption = document.createElement('figcaption');
     figcaption.innerText = vid.caption;
 
     figure.appendChild(video);
@@ -153,12 +153,12 @@ function createVideoSection(sectTitle, vidArray) {
 }
 
 function filterVideos({ weapon, rank }) {
-  if (!weapon) weapon = "Bo";
+  if (!weapon) weapon = 'Bo';
   if (!rank) rank = 0;
   window.activeWeapon = weapon;
   let weaponVideos = videos[weapon];
   Object.keys(weaponVideos).forEach((cat) => {
-    if (!["name", "ranks"].includes(cat)) {
+    if (!['name', 'ranks'].includes(cat)) {
       weaponVideos[cat] = weaponVideos[cat].filter(
         (video) => video.rank >= rank
       );
@@ -193,12 +193,12 @@ function calculateRanks() {
 }
 
 function getRankName(rank) {
-  if (rank == 0) return "Shodan";
+  if (rank == 0) return 'Shodan';
 
-  let suffix = "th";
-  if (rank == 1) suffix = "st";
-  if (rank == 2) suffix = "nd";
-  if (rank == 3) suffix = "rd";
+  let suffix = 'th';
+  if (rank == 1) suffix = 'st';
+  if (rank == 2) suffix = 'nd';
+  if (rank == 3) suffix = 'rd';
 
   return `${rank}${suffix} Kyu`;
 }
