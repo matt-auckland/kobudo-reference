@@ -268,7 +268,7 @@ const videos = {
         rank: 4,
         src: "video/Tekko/TekkoKihon10.mp4",
         caption:
-          "Tekko Kihon 10: Jōdan Kamae + Gedan Uke - Mawashi Uke - Morote Chūdan - Shotei Uchi (shikodachi)",
+          "Tekko Kihon 10: Jōdan Kamae + Gedan Uke - Mawashi Uke - Morote Chūdan Shotei Uchi (shikodachi)",
       },
     ],
     Kata: [
@@ -289,7 +289,64 @@ const videos = {
       },
     ],
   },
-  Tonfa: { name: "Tonfa", Junbi: [], Kihon: [], Kata: [], Kumite: [] },
+  Tonfa: {
+    name: "Tonfa",
+    Junbi: [],
+    Kihon: [
+      {
+        src: "video/Tonfa/Tonfa Kihon #1.mp4",
+        caption: "Tonfa Kihon #1",
+        rank: 0,
+      },
+      {
+        src: "video/Tonfa/Tonfa Kihon #4.mp4",
+        caption: "Tonfa Kihon #4",
+        rank: 0,
+      },
+      {
+        src: "video/Tonfa/Tonfa Kihon #8.mp4",
+        caption: "Tonfa Kihon #8",
+        rank: 0,
+      },
+      {
+        src: "video/Tonfa/Tonfa Kihon #10.mp4",
+        caption: "Tonfa Kihon #10",
+        rank: 0,
+      },
+      {
+        src: "video/Tonfa/Tonfa Kihon #5.mp4",
+        caption: "Tonfa Kihon #5",
+        rank: 0,
+      },
+      {
+        src: "video/Tonfa/Tonfa Kihon #9.mp4",
+        caption: "Tonfa Kihon #9",
+        rank: 0,
+      },
+      {
+        src: "video/Tonfa/Tonfa Kihon #2.mp4",
+        caption: "Tonfa Kihon #2",
+        rank: 0,
+      },
+      {
+        src: "video/Tonfa/Tonfa Kihon #6.mp4",
+        caption: "Tonfa Kihon #6",
+        rank: 0,
+      },
+      {
+        src: "video/Tonfa/Tonfa Kihon #3.mp4",
+        caption: "Tonfa Kihon #3",
+        rank: 0,
+      },
+      {
+        src: "video/Tonfa/Tonfa Kihon #7.mp4",
+        caption: "Tonfa Kihon #7",
+        rank: 0,
+      },
+    ],
+    Kata: [],
+    Kumite: [],
+  },
 };
 
 export default videos;
