@@ -40,6 +40,7 @@ function selectWeapon(event) {
   let filteredVideos = filterVideos({ weapon, rank: 0 });
   populateHeader({ activeRank: 0 });
   renderVideos(filteredVideos);
+  window.scroll(0, 0);
 }
 
 function filterByRank(event) {

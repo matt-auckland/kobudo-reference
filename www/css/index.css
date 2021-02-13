@@ -367,9 +367,11 @@ li {
   --danger-text-background-color: #ffe7ec;
   --success-text-background-color: #e4faec;
 
-  --success-color: #099db8;
-  --success-hover-color: #00d9ff;
-  --selected-color: #00d9ff;
+  --success-color: #0e2e8f;
+  --success-hover-color: #186ce9;
+  --selected-color: var(--success-hover-color);
+  --link-colour: var(--success-color);
+  --link-hover-colour: var(--success-hover-color);
 }
 
 button,
@@ -550,26 +552,20 @@ header {
   top: 0;
   left: 0;
   width: 100%;
+  height: 105px;
   padding: 10px;
   background: #ccc;
   text-align: center;
+
+  display: grid;
+  grid-template-columns: minmax(1px, 250px) 250px;
+  justify-content: space-between;
 }
 
-#content {
-  padding: 10px 15px !important;
-  margin: 0 auto;
-  max-width: 768px;
-}
-
-.break {
-  font-size: 20px;
-}
-
-.hidden {
-  display: none;
-}
-:root {
-  --link-colour: blue;
+header nav {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
 }
 
 .fake-link {
@@ -584,19 +580,25 @@ header {
 }
 
 .fake-link:hover {
-  border-bottom: 1px solid var(--link-colour);
+  color: var(--link-hover-colour);
 }
 
 .filter-btns {
-  margin-top: 10px;
   display: flex;
   justify-content: center;
   flex-wrap: wrap;
+  align-items: flex-start;
   gap: 10px;
 }
 
 .filter-btn.active {
   background-color: var(--selected-color) !important;
+}
+
+#content {
+  padding: 10px 15px !important;
+  margin: 0 auto;
+  max-width: 768px;
 }
 
 details {
@@ -606,4 +608,12 @@ details {
 figcaption {
   font-size: 18px;
   margin: 5px 0 10px 0;
+}
+
+.break {
+  font-size: 20px;
+}
+
+.hidden {
+  display: none;
 }
